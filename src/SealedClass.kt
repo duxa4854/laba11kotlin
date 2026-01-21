@@ -24,6 +24,22 @@ fun main(){
     handleResult(success)
     handleResult(error)
     handleResult(loading)
-
+    handleOrder(OrderStatus.Created)
+    handleOrder(OrderStatus.Paid)
+    handleOrder(OrderStatus.Shipped)
+    handleOrder(OrderStatus.Cancelled("Нет товара на складе"))
 }
-
+sealed class  OrderStatus{
+    object  Created : OrderStatus()
+    object  Paid : OrderStatus()
+    object  Shipped : OrderStatus()
+    data class Cancelled(val result: String) : OrderStatus()
+}
+fun handleOrder(status: OrderStatus){
+    when (status){
+        OrderStatus.Created -> println("Заказ создан")
+        OrderStatus.Paid ->  println("Заказ оплачен")
+        OrderStatus.Shipped -> println("Заказ отправлен")
+        is OrderStatus.Cancelled -> println("Отменен:${status.result}")
+    }
+}
